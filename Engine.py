@@ -9,6 +9,7 @@ class game_engine():
     def __init__(self, df):
         self.df = df
         self.board = Board(df)
+        self.turn = 1
 
     def check_win(self, player):
         df = self.df.copy()
@@ -38,6 +39,7 @@ class game_engine():
         return
 
     def make_move_user(self, player):
+        print(f"{'-' * 5}Turn: {self.turn}{'-' * 5}\n")
         print(f"{'-'*5}Input moves{'-'*5}\n\n")
 
         while True:
@@ -77,6 +79,7 @@ class game_engine():
         return
 
     def make_move(self, player, position):
+        print(f"{'-' * 5}Turn: {self.turn}{'-' * 5}\n")
         print(f"{'-'*5}Input moves{'-'*5}\n\n")
 
         # Decode position
@@ -92,7 +95,6 @@ class game_engine():
             8: (2, 2),
         }
 
-
         while True:
             while True:
                 try:
@@ -105,7 +107,6 @@ class game_engine():
                 except NotInRangeError:
                     print("\nInput needs to be between 0 and 2\n")
                     print()
-
             while True:
                 try:
                     y = d[position][1]
@@ -117,20 +118,24 @@ class game_engine():
                 except NotInRangeError:
                     print("Input needs to be between 0 and 2")
                     print()
+
             try:
                 if self.df.iloc[x,y] != 0:
                     raise Occupied
+                self.update_df(x, y, player)
+                self.update_board()
+                self.turn += 1
                 break
             except Occupied:
                 print("\nSpace is already occupied!!\n")
-                sys.exit(1)
-        self.df.iloc[x, y] = player
-
-        self.update_board()
+                print("\nTry Again!\n")
+                break
 
         return
 
-
+    def update_df(self, x, y, player):
+        self.df.iloc[x, y] = player
+        return
 
 
 
