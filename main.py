@@ -21,6 +21,7 @@ for i in range(9):
     engine.make_move(player, move)
     print(engine.board)
     engine.check_win(player)
+    engine.check_draw()
     player = (engine.turn-1) % 2 +1
 
 

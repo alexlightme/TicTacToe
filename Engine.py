@@ -14,8 +14,9 @@ class game_engine():
     def check_win(self, player):
         df = self.df.copy()
         df[df != player] = int(0)
-        if sum(df.to_numpy().diagonal())/3 == 1\
-                or sum(np.flip(df.to_numpy(),0).diagonal())/3 == 1\
+        df = df.mask(df == player, 1)
+        if sum(np.diagonal(df))/3 == 1\
+                or sum(np.diagonal(np.rot90(df,1)))/3 == 1\
                 or sum(df.iloc[ : , 0])/3 == 1\
                 or sum(df.iloc[ : , 1])/3 == 1\
                 or sum(df.iloc[ : , 2])/3 == 1\
@@ -27,6 +28,9 @@ class game_engine():
         else:
             return
 
+    def check_draw(self):
+
+        return
     def check_legal_move(self):
 
 
