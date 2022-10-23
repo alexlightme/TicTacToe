@@ -6,7 +6,7 @@ from Engine import *
 from Table import *
 from random import randrange
 
-random.seed(345)
+random.seed(3456)
 
 
 DF = pd.DataFrame(np.zeros((3, 3)).astype(int), columns=['A', 'B', 'C'])
@@ -16,7 +16,7 @@ engine = game_engine(DF)
 print(engine.board)
 
 player = 1
-for i in range(9):
+for i in range(200):
     move = randrange(9)
     engine.make_move(player, move)
     print(engine.board)

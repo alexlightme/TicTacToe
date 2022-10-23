@@ -23,13 +23,15 @@ class game_engine():
                 or sum(df.iloc[ 0 , :])/3 == 1\
                 or sum(df.iloc[ 1 , :])/3 == 1\
                 or sum(df.iloc[ 2 , :])/3 == 1:
-            print("Congrats")
+            print(f"Result: Player {player} wins!!")
             return sys.exit(0)
         else:
             return
 
     def check_draw(self):
-
+        if self.turn==10:
+            print("Result: Draw!")
+            sys.exit(0)
         return
     def check_legal_move(self):
 
