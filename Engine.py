@@ -44,49 +44,9 @@ class game_engine():
         self.board.update_line()
         return
 
-    def make_move_user(self, player):
-        print(f"{'-' * 5}Turn: {self.turn}{'-' * 5}\n")
-        print(f"{'-'*5}Input moves{'-'*5}\n\n")
-
-        while True:
-            while True:
-                try:
-                    x = int(input("Input row (0 to 2): "))
-                    if x < 0 or x > 2:
-                        raise NotInRangeError
-                    break
-                except ValueError:
-                    print("\nOops!  That was no valid number.  Try again...\n")
-                except NotInRangeError:
-                    print("\nInput needs to be between 0 and 2\n")
-                    print()
-
-            while True:
-                try:
-                    y = int(input("\nInput Column (0 to 2): \n"))
-                    if y < 0 or y > 2:
-                        raise NotInRangeError
-                    break
-                except ValueError:
-                    print("\nOops!  That was no valid number.  Try again...\n")
-                except NotInRangeError:
-                    print("Input needs to be between 0 and 2")
-                    print()
-            try:
-                if self.df.iloc[x,y] != 0:
-                    raise Occupied
-                break
-            except Occupied:
-                print("\nSpace is already occupied!!\n")
-        self.df.iloc[x, y] = player
-
-        self.update_board()
-
-        return
-
-    def make_move(self, player, position):
-        print(f"{'-' * 5}Turn: {self.turn}{'-' * 5}\n")
-        print(f"{'-'*5}Input moves{'-'*5}\n\n")
+    def make_move(self, player, position, user_input):
+        print(f"{'-' * 5}Player: {player} Turn: {self.turn}{'-' * 5}\n")
+        print(f"{'-'*5}Input moves{'-'*5}\n")
 
         # Decode position
         d = {
@@ -104,7 +64,10 @@ class game_engine():
         while True:
             while True:
                 try:
-                    x = d[position][0]
+                    if user_input:
+                        x = int(input("Input row (0 to 2): "))
+                    else:
+                        x = d[position][0]
                     if x < 0 or x > 2:
                         raise NotInRangeError
                     break
@@ -115,7 +78,10 @@ class game_engine():
                     print()
             while True:
                 try:
-                    y = d[position][1]
+                    if user_input:
+                        y = int(input("\nInput Column (0 to 2): \n"))
+                    else:
+                        y = d[position][1]
                     if y < 0 or y > 2:
                         raise NotInRangeError
                     break
@@ -134,7 +100,7 @@ class game_engine():
                 break
             except Occupied:
                 print("\nSpace is already occupied!!\n")
-                print("\nTry Again!\n")
+                print("Try Again!\n")
                 break
 
         return
