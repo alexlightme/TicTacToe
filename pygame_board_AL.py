@@ -107,6 +107,7 @@ class pygame_display():
     def user_click(self):
         # get coordinates of mouse click
         x, y = pg.mouse.get_pos()
+        board = self.board
 
         # get column of mouse click (1-3)
         if (x < self.width / 3):
@@ -137,7 +138,7 @@ class pygame_display():
         # after getting the row and col,
         # we need to draw the images at
         # the desired positions
-        if (row and col and board[row - 1][col - 1] is None):
+        if (row and col and board.iloc[row - 1][col - 1] == 0):
             global XO
             drawXO(row, col)
             check_win()
