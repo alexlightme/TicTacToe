@@ -5,6 +5,8 @@ import numpy as np
 from Engine import *
 from Table import *
 from random import randrange
+import pygame as pg
+
 
 random.seed(34567)
 
@@ -25,6 +27,22 @@ for i in range(200):
     engine.check_draw()
     player = (engine.turn-1) % 2 +1
 
+
+
+# Pygame
+while (True):
+
+    event_list = pg.event.get()
+    for event in event_list:
+        if event.type == pg.QUIT:
+            pg.quit()
+            sys.exit()
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            user_click()
+            if (winner or draw):
+                reset_game()
+    pg.display.update()
+    CLOCK.tick(fps)
 
 
 
