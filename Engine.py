@@ -26,6 +26,7 @@ class game_engine():
             print(f"Result: Player {player} wins!!")
             return sys.exit(0)
         else:
+            self.turn += 1
             return
 
     def check_draw(self):
