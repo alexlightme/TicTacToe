@@ -1,11 +1,9 @@
 import random
 
 from pygame_board_AL import pygame_display
-import numpy as np
 
 from Engine import *
-from Table import *
-from random import randrange
+from OLD.Table import *
 import pygame as pg
 
 
@@ -28,7 +26,7 @@ player = 1
 #     player = (engine.turn-1) % 2 +1
 #/////////////////////////////////////////////////////////////////////////////
 
-pg_display = pygame_display(engine)
+pg_display = pygame_display(DF)
 
 # Pygame
 while (True):

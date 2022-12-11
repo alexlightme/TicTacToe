@@ -4,9 +4,10 @@ import time
 from Engine import game_engine
 
 class pygame_display(game_engine):
-    def __init__(self, engine):
+    def __init__(self, DF):
+        game_engine.__init__(self,DF)
         self.XO = 1
-        vars(self).update(vars(engine))
+        # vars(self).update(vars(engine))
 
         # storing the winner's value at
         # any instant of code
@@ -31,7 +32,7 @@ class pygame_display(game_engine):
         self.line_color = (0, 0, 0)
 
         # setting up a 3 * 3 board in canvas
-        self.board = engine.df
+        self.board = DF
 
         # initializing the pygame window
         pg.init()
@@ -70,7 +71,7 @@ class pygame_display(game_engine):
         if self.winner is None:
             message = str(self.XO) + "'s Turn"
         else:
-            message = str(self.winner) + " won !"
+            message = str(self.winner[0]) + " won !"
         if draw:
             message = "Game Draw !"
 
@@ -86,6 +87,7 @@ class pygame_display(game_engine):
         self.screen.fill((0, 0, 0), (0, 400, 500, 100))
         text_rect = text.get_rect(center=(self.width / 2, 500 - 50))
         self.screen.blit(text, text_rect)
+        pg.display.update()
 
     def drawXO(self, row, col):
         # for the first row, the image
@@ -116,7 +118,7 @@ class pygame_display(game_engine):
 
         # setting up the required board
         # value to display
-        self.board.iloc[row - 1][col - 1] = self.XO
+        self.update_df(row, col, self.XO)
 
         if (self.XO == 1):
 
@@ -186,17 +188,35 @@ class pygame_display(game_engine):
         # the desired positions
         if (row and col and board.iloc[row - 1][col - 1] == 0):
             self.drawXO(row, col)
-            self.check_draw()
-            self.check_win(XO)
+            self.draw = self.check_draw()
+            self.winner = self.check_win(XO)
+            if self.winner:
+                result = self.winner[1]
+                if result.index[result.iloc[0,:]==1].tolist():
+                    max_c1 = max(result.index[result.iloc[0,:]==1].tolist())
+                    max_c3 = max(result.index[result.iloc[2,:]==1].tolist())
+                    pg.draw.line(self.screen, (250, 0, 0),
+                                 (max_c1 * self.width / 3 + self.width / 6, (1) * self.height / 3 - self.height / 6),
+                                 (max_c3 * self.width / 3 + self.width / 6, (3) * self.height / 3 - self.height / 6),
+                                 4)
+
+                else:
+                    max_r1 = max(result.index[result.iloc[:,0]==1].tolist())
+                    max_r3 = max(result.index[result.iloc[:,2]==1].tolist())
+                    pg.draw.line(self.screen, (250, 0, 0),
+                                 (1 * self.width / 3 + self.width / 6, (max_r1) * self.height / 3 - self.height / 6),
+                                 (3 * self.width / 3 + self.width / 6, (max_r3) * self.height / 3 - self.height / 6),
+                                 4)
+
+            self.draw_status()
 
     def reset_game(self):
-        global board, winner, XO, draw
         time.sleep(3)
-        XO = 'x'
-        draw = False
+        self.XO = 1
+        self.draw = False
         self.game_initiating_window()
-        winner = None
-        board = [[None] * 3, [None] * 3, [None] * 3]
+        self.winner = None
+        self.reset()
 
 
 
