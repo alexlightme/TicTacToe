@@ -193,19 +193,26 @@ class pygame_display(game_engine):
             if self.winner:
                 result = self.winner[1]
                 if result.index[result.iloc[0,:]==1].tolist():
-                    max_c1 = max(result.index[result.iloc[0,:]==1].tolist())
-                    max_c3 = max(result.index[result.iloc[2,:]==1].tolist())
-                    pg.draw.line(self.screen, (250, 0, 0),
-                                 (max_c1 * self.width / 3 + self.width / 6, (1) * self.height / 3 - self.height / 6),
-                                 (max_c3 * self.width / 3 + self.width / 6, (3) * self.height / 3 - self.height / 6),
-                                 4)
+                    if len(result.index[result.iloc[0,:]==1].tolist())==3:
+                        max_c1 = max(result.index[result.iloc[0, :] == 1].tolist())
+                        pg.draw.line(self.screen, (250, 0, 0),
+                                     (1 * self.width / 3 - self.width / 6, (1) * self.height / 3 - self.height / 6),
+                                     (2 * self.width / 3 + self.width / 6, (1) * self.height / 3 - self.height / 6),
+                                     4)
+                    else:
+                        max_c1 = max(result.index[result.iloc[0,:]==1].tolist())
+                        max_c3 = max(result.index[result.iloc[2,:]==1].tolist())
+                        pg.draw.line(self.screen, (250, 0, 0),
+                                     (max_c1 * self.width / 3 + self.width / 6, (1) * self.height / 3 - self.height / 6),
+                                     (max_c3 * self.width / 3 + self.width / 6, (3) * self.height / 3 - self.height / 6),
+                                     4)
 
                 else:
                     max_r1 = max(result.index[result.iloc[:,0]==1].tolist())
                     max_r3 = max(result.index[result.iloc[:,2]==1].tolist())
                     pg.draw.line(self.screen, (250, 0, 0),
-                                 (1 * self.width / 3 + self.width / 6, (max_r1) * self.height / 3 - self.height / 6),
-                                 (3 * self.width / 3 + self.width / 6, (max_r3) * self.height / 3 - self.height / 6),
+                                 (1 * self.width / 3 - self.width / 6, (max_r1) * self.height / 3 + self.height / 6),
+                                 (3 * self.width / 3 - self.width / 6, (max_r3) * self.height / 3 + self.height / 6),
                                  4)
 
             self.draw_status()
