@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 from OLD.Table import Board
-
+import random as rand
 
 class game_engine():
     def __init__(self, df):
@@ -73,6 +73,15 @@ class game_engine():
         self.df.iloc[x-1, y-1] = player
         return
 
+    def random_move(self):
+        player = self.player
+        legal_moves_index = self.legal_moves_index()
+        move = legal_moves_index[rand.randint(0, len(legal_moves_index)-1)]
+        return move
+
+    def legal_moves_index(self):
+        legal_index = self.df[self.df == 0]
+        return legal_index.stack().index.to_list()
 
     def reset(self):
         self.df = self.initial_df.copy()
