@@ -18,7 +18,7 @@ DF = pd.DataFrame(np.zeros((3, 3)).astype(int), columns=['A', 'B', 'C'])
 engine = game_engine(DF)
 user_input =True
 player = 1
-random_gen = False
+random_gen = True
 #/////////////////////////////////////////////////////////////////////////////
 # OLD DISPLAY AND ENGINE
 # for i in range(200):
@@ -34,43 +34,59 @@ print(red)
 pg_display = pygame_display(DF)
 
 count = 0
+gamecount = 0
 # Pygame
 print("\n")
+
+def buffer ():
+    ev = pg.event.Event ( pg.USEREVENT )
+    pg.event.post ( ev )
 while (True):
-    time.sleep(.3)
+    # time.sleep(.5)
+    buffer()
     event_list = pg.event.get()
-    for event in event_list:
-        t1 = time.time()
-        if event.type == pg.QUIT:
-            pg.quit()
-            sys.exit()
-        elif random_gen:
-            count += 1
+    # event_list.append(pg.USEREVENT)
+    if random_gen:
+        count += 1
+        try:
             move = pg_display.random_move()
-            # pg.quit()
-            # sys.exit()
-            column = pg_display.df.columns.get_loc(move[1])+1
-            row = move[0]+1
-            pg_display.draw_state(row,column, player)
-            pg_display.draw_status()
-            if (pg_display.winner or pg_display.draw):
-                pg_display.reset_game()
+        except:
+            print("Uhoh")
 
-        elif event.type == pg.MOUSEBUTTONDOWN:
-            count += 1
-            pg_display.user_click()
-            if (pg_display.winner or pg_display.draw):
-                pg_display.reset_game()
+        # pg.quit()
+        # sys.exit()
+        column = move[1] + 1
+        row = move[0] + 1
+        pg_display.draw_state(row, column, player)
+        pg_display.draw_status()
+        if (pg_display.winner or pg_display.draw):
+            gamecount += 1
+            pg_display.reset_game()
+            pg.event.clear
 
-        t2 = time.time()
-        # print(f"\rAverage event time: {(t2-t1)/len(event_list)}")
-        if ((t2-t1)/len(event_list)) > 1:
-            print("SLOWPOKE")
+    else:
+        for event in event_list:
+            t1 = time.time()
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                count += 1
+                pg_display.user_click()
+                if (pg_display.winner or pg_display.draw):
+                    pg_display.reset_game()
+                    pg.event.clear
+                    break
 
-        sys.stdout.write(f"\rNumber of events:{progress_bar(count, 9)}")
-        sys.stdout.flush()
+            t2 = time.time()
+            # print(f"\rAverage event time: {(t2-t1)/len(event_list)}")
+            if ((t2-t1)/len(event_list)) > 1:
+                print("SLOWPOKE")
+            pg.display.update()
 
-        pg.display.update()
+    sys.stdout.write(f"\rNumber of events:{len(event_list)} - --- - Game#: {gamecount}")# {progress_bar(count, 9)}")
+    sys.stdout.flush()
+
     pg_display.CLOCK.tick(pg_display.fps)
 
 

@@ -62,7 +62,7 @@ class game_engine():
             return
 
     def check_draw(self):
-        if self.turn==10:
+        if self.turn==9:
             print("Result: Draw!")
             return [0]
         else:
@@ -70,18 +70,23 @@ class game_engine():
 
     def update_df(self, x, y, player):
         self.player = player
-        self.df.iloc[x-1, y-1] = player
+        if (x-1, y-1) in self.legal_moves_index():
+            self.df.iloc[x-1, y-1] = player
         return
 
     def random_move(self):
         player = self.player
         legal_moves_index = self.legal_moves_index()
+        if not legal_moves_index:
+            print("\n\n"+"-"*3+"no legal moves"+"-"*3)
+            sys.exit(0)
         move = legal_moves_index[rand.randint(0, len(legal_moves_index)-1)]
         return move
 
     def legal_moves_index(self):
         legal_index = self.df[self.df == 0]
-        return legal_index.stack().index.to_list()
+        legal_index = [(a, self.df.columns.get_loc(b)) for a, b in legal_index.stack().index.to_list()]
+        return legal_index
 
     def reset(self):
         self.df = self.initial_df.copy()

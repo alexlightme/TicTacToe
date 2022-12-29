@@ -118,6 +118,7 @@ class pygame_display(game_engine):
 
         # setting up the required board
         # value to display
+
         self.update_df(row, col, self.XO)
 
         if (self.XO == 1):
@@ -186,7 +187,7 @@ class pygame_display(game_engine):
         # after getting the row and col,
         # we need to draw the images at
         # the desired positions
-        if (row and col and board.iloc[row - 1][col - 1] == 0):
+        if (row and col and self.df.iloc[row - 1][col - 1] == 0):
             self.draw_state(row,col,XO)
             self.draw_status()
 
