@@ -38,8 +38,8 @@ gamecount = 0
 print("\n")
 
 states = pg_display.legal_moves_index()
-player1 = Agent(states)
-player2 = Agent(states)
+player1 = Agent(states,1)
+player2 = Agent(states, 2)
 agent_list = [player1, player2]
 curr_player = 0
 
@@ -67,9 +67,15 @@ while (True):
         row = move[0] + 1
         pg_display.draw_state(row, column, player)
         pg_display.draw_status()
+
+        #next player
+        curr_player += 1
+        curr_player = curr_player % 2
+
         if (pg_display.winner or pg_display.draw):
             gamecount += 1
             pg_display.reset_game()
+            curr_player = 0
             pg.event.clear
 
     else:
@@ -94,8 +100,6 @@ while (True):
 
     sys.stdout.write(f"\rNumber of events:{len(event_list)} - --- - Game#: {gamecount}")# {progress_bar(count, 9)}")
     sys.stdout.flush()
-    curr_player += 1
-    curr_player = curr_player % 2
 
     pg_display.CLOCK.tick(pg_display.fps)
 
