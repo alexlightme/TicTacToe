@@ -9,9 +9,8 @@ class Agent(object):
         self.init_reward(states)
 
     def init_reward(self, states):
-        for i, row in enumerate(states):
-            for j, col in enumerate(row):
-                self.G[(j,i)] = np.random.uniform(high=1.0, low=0.1)
+        for state in states:
+                self.G[state] = np.random.uniform(high=1.0, low=0.1)
     def choose_action(self, state, allowedMoves):
         maxG = -10e15
         next_move = None
