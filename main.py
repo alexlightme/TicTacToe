@@ -1,7 +1,6 @@
 import random
 import time
-import curses
-
+from Agent import *
 from pygame_board_AL import pygame_display
 
 from Engine import *
@@ -38,6 +37,12 @@ gamecount = 0
 # Pygame
 print("\n")
 
+states = pg_display.legal_moves_index()
+player1 = Agent(states)
+player2 = Agent(states)
+agent_list = [player1, player2]
+curr_player = 0
+
 def buffer ():
     ev = pg.event.Event ( pg.USEREVENT )
     pg.event.post ( ev )
@@ -49,7 +54,10 @@ while (True):
     if random_gen:
         count += 1
         try:
-            move = pg_display.random_move()
+            player = agent_list[curr_player]
+            legal_moves = pg_display.legal_moves_index()
+            move = player.choose_action(legal_moves,legal_moves)
+            # move = pg_display.random_move()
         except:
             print("Uhoh")
 
@@ -86,6 +94,8 @@ while (True):
 
     sys.stdout.write(f"\rNumber of events:{len(event_list)} - --- - Game#: {gamecount}")# {progress_bar(count, 9)}")
     sys.stdout.flush()
+    curr_player += 1
+    curr_player = curr_player % 2
 
     pg_display.CLOCK.tick(pg_display.fps)
 
