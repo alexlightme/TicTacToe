@@ -16,18 +16,8 @@ DF = pd.DataFrame(np.zeros((3, 3)).astype(int), columns=['A', 'B', 'C'])
 
 engine = game_engine(DF)
 user_input =True
-player = 1
 random_gen = True
-#/////////////////////////////////////////////////////////////////////////////
-# OLD DISPLAY AND ENGINE
-# for i in range(200):
-#     move = randrange(9)
-#     engine.make_move(player, move, user_input=user_input)
-#     print(engine.board)
-#     engine.check_win(player)
-#     engine.check_draw()
-#     player = (engine.turn-1) % 2 +1
-#/////////////////////////////////////////////////////////////////////////////
+
 red     = "\033[0;31m"
 print(red)
 pg_display = pygame_display(DF)
@@ -75,6 +65,7 @@ while (True):
         if (pg_display.winner or pg_display.draw):
             gamecount += 1
             pg_display.reset_game()
+            player.learn()
             curr_player = 0
             pg.event.clear
 

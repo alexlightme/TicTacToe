@@ -93,3 +93,7 @@ class game_engine():
         self.turn = 1
         self.player = 1
 
+    def rewards(self):
+
+
+

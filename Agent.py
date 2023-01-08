@@ -47,3 +47,4 @@ class Agent(object):
 
     def __repr__(self):
         return f"Agent {self.num}"
+
